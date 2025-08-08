@@ -15,13 +15,7 @@
       ];
 
       forAllSystems = f: nixpkgs.lib.genAttrs allSystems (system: f {
-        pkgs = import nixpkgs { 
-          inherit system; 
-          config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
-            "vscode"
-            "vscode-with-extensions"
-          ];
-        };
+        pkgs = import nixpkgs { inherit system; };
       });
     in
     {
@@ -30,11 +24,6 @@
           packages = with pkgs; [
             httpie
             zulu24
-            (vscode-with-extensions.override {
-              vscodeExtensions = with vscode-extensions; [
-                redhat.java
-              ];
-            })
           ];
         };
       });
